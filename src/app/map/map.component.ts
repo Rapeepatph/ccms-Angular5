@@ -1,61 +1,61 @@
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import {MarkerService} from '../marker.service'
-//import { MapService } from '../map.service';
-import { GeoJson, FeatureCollection } from '../map'
+import {MarkerService} from '../services/marker.service'
+import { MapService } from '../services/map.service';
+import { GeoJson, FeatureCollection } from '../Model/map'
+import { error } from 'util';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-
-
-  constructor(private markerService: MarkerService) { }
+  // markers = [
+  //   {
+  //       id: 1,
+  //       name: 'Tower',
+  //       lng: 102.777419,
+  //       lat: 17.386123
+  //   },
+  //   {
+  //       id: 2,
+  //       name: 'SSR',
+  //       lng: 102.769973,
+  //       lat: 17.387600
+  //   },
+  //   {
+  //       id: 3,
+  //       name: 'VOR',
+  //       lng: 102.774959,
+  //       lat: 17.384789
+  //   },
+  //   {
+  //       id: 4,
+  //       name: 'Localizer',
+  //       lng: 102.771181,
+  //       lat: 17.394792
+  //   },
+  //   {
+  //       id: 5,
+  //       name: 'Glide Slope',
+  //       lng: 102.798872,
+  //       lat: 17.382417
+  //   }
+  // ];
   map: mapboxgl.Map;
-  message = 'Hello from DME'
   
   // data
+  markers:any
   source: any;
-  markers: any;
-data:any;
+  data:any;
+  markerCoordinate:any
+  constructor(private _markerService: MarkerService,private _mapService:MapService) { }
+  
   ngOnInit() {
-    //this.markers = this.mapService.getMarkers()
-    this.markers = [
-      {
-          id: 1,
-          name: 'Tower',
-          lng: 102.777419,
-          lat: 17.386123
-      },
-      {
-          id: 2,
-          name: 'SSR',
-          lng: 102.769973,
-          lat: 17.387600
-      },
-      {
-          id: 3,
-          name: 'VOR',
-          lng: 102.774959,
-          lat: 17.384789
-      },
-      {
-          id: 4,
-          name: 'Localizer',
-          lng: 102.771181,
-          lat: 17.394792
-      },
-      {
-          id: 5,
-          name: 'Glide Slope',
-          lng: 102.798872,
-          lat: 17.382417
-      }
-    ];
-    this.data = this.markerService.test(this.markers);
-    console.log('test',this.data);
-    //this.data = new FeatureCollection(this.markers)
+    this._mapService.getMarkers().subscribe(
+      res=>this.data = this._markerService.test(res),
+      error=>console.log(error.message));
+
     this.buildMap()
 
   }
@@ -85,7 +85,6 @@ data:any;
         source: 'firebase',
         type: 'circle',
         // layout: {
-        //   'text-field': '{message}',
         //   'text-size': 40,
         //   'text-transform': 'uppercase',
         //   'icon-image': 'building',

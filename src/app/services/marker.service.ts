@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Marker} from './marker';
+import {Marker} from '../Model/marker';
 import { markParentViewsForCheck } from '@angular/core/src/view/util';
 @Injectable()
 export class MarkerService {

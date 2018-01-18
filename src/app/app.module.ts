@@ -8,8 +8,8 @@ import {AngularFireModule} from 'angularfire2';
 import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import{MarkerService} from './marker.service';
-import{MapService} from './map.service';
+import{MarkerService} from './services/marker.service';
+import{MapService} from './services/map.service';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
