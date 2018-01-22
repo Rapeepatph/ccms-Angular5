@@ -4,52 +4,28 @@ import {MarkerService} from '../services/marker.service'
 import { MapService } from '../services/map.service';
 import { GeoJson, FeatureCollection } from '../Model/map'
 import { error } from 'util';
+
+//---about dialog------
+import { MatDialog, MatDialogRef } from '@angular/material';
+import{ListServiceDialogComponent} from '../list-service-dialog/list-service-dialog.component'
+
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  // markers = [
-  //   {
-  //       id: 1,
-  //       name: 'Tower',
-  //       lng: 102.777419,
-  //       lat: 17.386123
-  //   },
-  //   {
-  //       id: 2,
-  //       name: 'SSR',
-  //       lng: 102.769973,
-  //       lat: 17.387600
-  //   },
-  //   {
-  //       id: 3,
-  //       name: 'VOR',
-  //       lng: 102.774959,
-  //       lat: 17.384789
-  //   },
-  //   {
-  //       id: 4,
-  //       name: 'Localizer',
-  //       lng: 102.771181,
-  //       lat: 17.394792
-  //   },
-  //   {
-  //       id: 5,
-  //       name: 'Glide Slope',
-  //       lng: 102.798872,
-  //       lat: 17.382417
-  //   }
-  // ];
   map: mapboxgl.Map;
-  
   // data
-  markers:any
-  source: any;
   data:any;
-  markerCoordinate:any
-  constructor(private _markerService: MarkerService,private _mapService:MapService) { }
+  source: any;
+
+  listServiceDialogRef : MatDialogRef<ListServiceDialogComponent>;
+
+  constructor(private _markerService: MarkerService,
+              private _mapService:MapService,
+              private dialog:MatDialog) { }
   
   ngOnInit() {
     this._mapService.getMarkers().subscribe(
@@ -59,6 +35,15 @@ export class MapComponent implements OnInit {
     this.buildMap()
 
   }
+
+  openListServiceDialog(id : number){
+    this.listServiceDialogRef = this.dialog.open(ListServiceDialogComponent,{
+      data:{
+        idBuilding:id
+      }
+    });
+  }
+
   buildMap(){
     mapboxgl.accessToken = 'pk.eyJ1IjoicmFwZWVwYXRwaCIsImEiOiJjamFpejVrOGgyMXBxMzNxdTQ5aWdtcTM1In0.XCwwqYiQ2AA9va7j2jUMwg';
     this.map = new mapboxgl.Map({
@@ -71,6 +56,7 @@ export class MapComponent implements OnInit {
 
 
     this.map.on('load', (event)=>{
+      /// register source
       this.map.addSource('firebase', {
         type: 'geojson',
         data:{
@@ -78,10 +64,10 @@ export class MapComponent implements OnInit {
           "features":this.data
         }
       });
-
+      
       
       this.map.addLayer({
-        id: 'firebase',
+        id: 'marker',
         source: 'firebase',
         type: 'circle',
         // layout: {
@@ -101,20 +87,23 @@ export class MapComponent implements OnInit {
         closeButton: false,
         closeOnClick: false
       });
-      this.map.on('mouseenter', 'firebase', (event)=> {  //****Do not forget change name depend on marker name
+      this.map.on('mouseenter', 'marker', (event)=> {  //****Do not forget change name depend on marker id
         this.map.getCanvas().style.cursor = 'pointer';
 
         popup.setLngLat(event.features[0].geometry.coordinates)
         .setHTML("<strong>" + event.features[0].properties.name + "</strong>")
         .addTo(this.map);
       });
-      this.map.on('mouseover', 'firebase', (event)=> { //****Do not forget change name depend on marker name
+      this.map.on('mouseover', 'marker', (event)=> { //****Do not forget change name depend on marker id
         console.log("mouse over", event);
       });
-      this.map.on('mouseleave', 'firebase', (event)=> { //****Do not forget change name depend on marker name
+      this.map.on('mouseleave', 'marker', (event)=> { //****Do not forget change name depend on marker id
         this.map.getCanvas().style.cursor = '';
         popup.remove();
       });
+      this.map.on('click','marker',(event)=>{   //****Do not forget change name depend on marker id
+        this.openListServiceDialog(event.features[0].properties.id);
+      })
       
     })
   }

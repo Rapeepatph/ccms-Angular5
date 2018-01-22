@@ -10,24 +10,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import{MarkerService} from './services/marker.service';
 import{MapService} from './services/map.service';
+import{ListServiceService } from './services/list-service.service';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
+//----Dialog-----
+import { ListServiceDialogComponent } from './list-service-dialog/list-service-dialog.component';
 
 
 export const config={
-  apiKey: "AIzaSyAib9p1x6EjoZI5j5F2yFJyoocWIhE_u_c",
-    authDomain: "ccms-186600.firebaseapp.com",
-    databaseURL: "https://ccms-186600.firebaseio.com",
-    projectId: "ccms-186600",
-    storageBucket: "",
-    messagingSenderId: "153735653178"
+  
 }
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent
+    MapComponent,
+    ListServiceDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +37,8 @@ export const config={
     AngularFireModule.initializeApp(config)
    
   ],
-  providers: [MarkerService,MapService],
+  entryComponents: [ListServiceDialogComponent],
+  providers: [MarkerService,MapService,ListServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
