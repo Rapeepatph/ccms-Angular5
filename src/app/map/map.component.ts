@@ -30,16 +30,19 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this._mapService.getMarkers().subscribe(
       res=>this.data = this._markerService.test(res),
-      error=>console.log(error.message));
+      error=>console.error(error.message));
 
     this.buildMap()
 
   }
 
-  openListServiceDialog(id : number){
+  openListServiceDialog(id : number,nameOfBuilding : string){
     this.listServiceDialogRef = this.dialog.open(ListServiceDialogComponent,{
+      height: '400px',
+      width: '600px',
       data:{
-        idBuilding:id
+        idBuilding:id,
+        nameBuilding : nameOfBuilding
       }
     });
   }
@@ -102,7 +105,7 @@ export class MapComponent implements OnInit {
         popup.remove();
       });
       this.map.on('click','marker',(event)=>{   //****Do not forget change name depend on marker id
-        this.openListServiceDialog(event.features[0].properties.id);
+        this.openListServiceDialog(event.features[0].properties.id,event.features[0].properties.name);
       })
       
     })

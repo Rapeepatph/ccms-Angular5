@@ -10,9 +10,9 @@ import{Service} from '../Model/service';
 export class ListServiceService {
 
   constructor(private _http: Http) { }
-  getServices(id:number): Observable<any> {
+  getServicesByBuildingId(id:number): Observable<any> {
     return this._http
-           .get('/api/Buildings/'+id)
+           .get('/api/services/ByBuildingId?buildingId='+id)
            .map(response => { return response.json(); });
  }
  addService(service ){
