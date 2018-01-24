@@ -21,6 +21,8 @@ export class ListServiceService {
    let body = JSON.stringify(service);
    return this._http.post('/api/Services/',body,options).map((res: Response) => res.json())
 
-  
+ }
+ deleteService(serviceId){
+   return this._http.delete('/api/Services/'+serviceId);
  }
 }

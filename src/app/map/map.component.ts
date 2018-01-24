@@ -38,8 +38,8 @@ export class MapComponent implements OnInit {
 
   openListServiceDialog(id : number,nameOfBuilding : string){
     this.listServiceDialogRef = this.dialog.open(ListServiceDialogComponent,{
-      height: '400px',
-      width: '600px',
+      height: '600px',
+      width: '60%',
       data:{
         idBuilding:id,
         nameBuilding : nameOfBuilding

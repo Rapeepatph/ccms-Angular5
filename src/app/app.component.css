@@ -12,3 +12,6 @@
     left: 0;
     right: 0;
   }
+  .mat-icon{
+    padding-top: 2px;
+  }
