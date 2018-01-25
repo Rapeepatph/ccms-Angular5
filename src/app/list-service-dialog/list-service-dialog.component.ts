@@ -48,13 +48,6 @@ export class ListServiceDialogComponent implements OnInit {
     });
     
   }
-  collapsed(event: any): void {
-    
-  }
- 
-  expanded(event: any): void {
-    
-  }
   initItemRows(res:any) {
     return this._fb.group({
       parent:[res],
@@ -75,6 +68,16 @@ addNewRow() {
 deleteRow(index: number) {
   const control = <FormArray>this.invoiceForm.controls['itemRows'];
   control.removeAt(index);
+}
+
+openListD3Dialog(dataOfService:any){
+  console.log('serv',JSON.parse(dataOfService.dataEquipment));
+  this.d3DialogRef = this.dialog.open(D3DialogComponent,{
+    height: '500px',
+    width: '60%',
+    data:{
+    }
+  });
 }
 
 getServiceByBuilding(){
