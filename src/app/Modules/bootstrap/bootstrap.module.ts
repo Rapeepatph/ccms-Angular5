@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
 
 
-import{AlertModule} from 'ngx-bootstrap'
+import{AlertModule,
+  CollapseModule 
+} from 'ngx-bootstrap'
 @NgModule({
   imports: [
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    CollapseModule .forRoot()
   ],
   exports:[
-    AlertModule
+    AlertModule,
+    CollapseModule 
   ],
 
   declarations: []

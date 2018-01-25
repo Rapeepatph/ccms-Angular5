@@ -1,69 +1,75 @@
-<!-- <div class=container>
-  <div class="colFlex">
-      <h2 md-dialog-title>{{nameBuilding}}</h2>
-      <hr>
+
+<div class="modal-header">
+  <h4 class="modal-title pull-left">
+      Location = {{nameBuilding}}
+  </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="onCloseCancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+    <ul  *ngFor="let serv of arrayServices">
+      <li class="list-group-item">
+         {{serv.name}}
+        <button mat-icon-button color='primary' (click)='DeleteService(serv)'>
+            <mat-icon fontSet="fa" fontIcon="fa-window-close"></mat-icon>
+        </button>
+      </li>
+    </ul>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-3">
+    <button type="button" class="btn btn-primary btn-md"
+      (click)="isOpen = !isOpen">Add Service
+    </button>
   </div>
-  
-  <div class="colFlex">
-      <mat-dialog-content>
-          <mat-list-item *ngFor="let serv of arrayServices" >
-            <mat-grid-list cols=2>
-                <div class="inColflex">
-                    <li>{{serv.name}} </li>
-                </div>
-                <div class="inColflex">
-                    <button mat-icon-button color='primary' (click)='DeleteService(serv)'>
-                        <mat-icon>backspace</mat-icon>
-                    </button>
-                </div>
-            </mat-grid-list>
-         </mat-list-item>
-        </mat-dialog-content>
-        <hr>
-  </div>
-  
-  <div class="colFlex">
-      <mat-dialog-actions >
-          <div >
-              <button md-raised-button (click)="onCloseConfirm()">CONFIRM</button>&nbsp;
-              <button md-raised-button (click)="onCloseCancel()">CANCEL</button>
-          </div>
-          <hr>
-          <div >
-              <button type="button" (click)="addNewRow()" class="btn btn-primary">Add new Row</button><br>
-              <form>
-                <h4>service : {{ServiceName}}</h4>
+  <div class="col-md-9">
+      <div [collapse]="isOpen">
+          <div class="row"  >
+              <div class="col-md-9">
                   <mat-form-field >
                       <input matInput placeholder="Service Name" [(ngModel)]="ServiceName" [ngModelOptions]="{standalone: true}">
                   </mat-form-field>
-              </form>
-              
-              <form [formGroup]="invoiceForm">
-                  <div formArrayName="itemRows">
-                    <div *ngFor="let itemrow of invoiceForm.controls.itemRows.controls; let i=index"  [formGroupName]="i">
-                      <h4>Equipment #{{ i + 1 }}</h4>
-                      
-                      <mat-form-field>
-                          
-                          <mat-select placeholder="Equipment" formControlName="name" >
-                            <mat-option *ngFor="let food of arrayEquipment" [value]=food.name >
-                              {{ food.name }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      <button *ngIf="invoiceForm.controls.itemRows.controls.length > 1" (click)="deleteRow(i)" class="btn btn-danger">Delete Button</button>
-                    </div>
-                  </div>
-                </form>
-                {{invoiceForm.value|json}}
+                </div>
           </div>
-        </mat-dialog-actions>
+          <div class="row"  >
+              <div class="col-md-6">
+                  <strong>Equipment</strong>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" (click)="addNewRow()" class="btn btn-primary">+</button>
+                </div>
+          </div>
+          <div class="row"  >
+              <div class="col-md-12">
+                  <form [formGroup]="invoiceForm">
+                      <div formArrayName="itemRows">
+                          <div *ngFor="let itemrow of invoiceForm.controls.itemRows.controls; let i=index"  [formGroupName]="i" >
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Equipment" formControlName="name" >
+                                            <mat-option *ngFor="let equip of arrayEquipment" [value]=equip.name >
+                                                {{ equip.name }}
+                                              </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <button *ngIf="invoiceForm.controls.itemRows.controls.length > 1" (click)="deleteRow(i)" class="btn btn-danger">-</button>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                  </form>
+                </div>
+          </div>
+          <div class="row">
+              <button type="button" (click)="addNewRow()" class="btn btn-primary">+</button>&nbsp;
+              <button type="button" class="btn btn-primary" (click)="onCloseConfirm()">CONFIRM</button>
+          </div>
+      </div>
+      {{invoiceForm.value|json}}
   </div>
-  
-</div> -->
-<div class="col-md-4">
-    <alert type="success">
-        <strong>Well done!</strong> You successfully read this important alert message.
-      </alert>
 </div>
-<hr>

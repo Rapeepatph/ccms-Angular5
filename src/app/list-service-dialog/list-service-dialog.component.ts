@@ -1,10 +1,14 @@
 import { Component, OnInit,Inject  } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { FormGroup, FormBuilder,FormArray,FormsModule,Validators } from '@angular/forms';
 
 
 import {ListServiceService} from '../services/list-service.service'
 import {EquipmentService} from '../services/equipment.service'
+
+
+import{D3DialogComponent} from '../d3-dialog/d3-dialog.component'
+
 @Component({
   selector: 'app-list-service-dialog',
   templateUrl: './list-service-dialog.component.html',
@@ -20,11 +24,15 @@ export class ListServiceDialogComponent implements OnInit {
   arrayServices:any = null;
   arrayEquipment : any = null;
   ServiceName:any;
+  isOpen:boolean = true;
+
+  d3DialogRef : MatDialogRef<D3DialogComponent>;
   constructor(private _listService : ListServiceService,
               private _equipmentService : EquipmentService,
               private _fb: FormBuilder,// For Added choice of input
-              private dialogRef: MatDialogRef<ListServiceDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) private data,
+              private dialog:MatDialog, // For create dialog at another component
+              private dialogRef: MatDialogRef<ListServiceDialogComponent>, //For close ,open dialog
+              @Inject(MAT_DIALOG_DATA) private data, //For receive data from another component that dialog is opened
               ) { }
 
   ngOnInit() {
@@ -38,6 +46,13 @@ export class ListServiceDialogComponent implements OnInit {
     this.invoiceForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows(null)])
     });
+    
+  }
+  collapsed(event: any): void {
+    
+  }
+ 
+  expanded(event: any): void {
     
   }
   initItemRows(res:any) {
@@ -61,29 +76,34 @@ deleteRow(index: number) {
   const control = <FormArray>this.invoiceForm.controls['itemRows'];
   control.removeAt(index);
 }
-  getServiceByBuilding(){
+
+getServiceByBuilding(){
     this._listService.getServicesByBuildingId(this.data.idBuilding).subscribe(
       res=>this.arrayServices = res,
       error=>console.error('Can not get service by building id!')
     )
   }
-  onCloseConfirm() {
+
+onCloseConfirm() {
     const control = <FormArray>this.invoiceForm.controls['itemRows'];
-    this._listService.addService({Name:this.ServiceName,BuildingId:this.data.idBuilding}).subscribe(
+    this._listService.addService({Name:this.ServiceName,BuildingId:this.data.idBuilding,DataEquipment:JSON.stringify(control.value)}).subscribe(
       data =>{
         alert('Service Added Successfully!');
       },
       error => {
+        alert("Error saving Service!");
         console.error("Error saving Service!");
     }
 
     );
     this.dialogRef.close('Confirm');
   }
-  onCloseCancel() {
+
+onCloseCancel() {
     this.dialogRef.close('Cancel');
   }
-  DeleteService(service){
+
+DeleteService(service){
     if (confirm("Are you sure you want to delete Service '" + service.name + "'?")){
       this._listService.deleteService(service.id).subscribe(
         data=>{
@@ -96,6 +116,5 @@ deleteRow(index: number) {
         }
       )
     }
-
   }
 }

@@ -15,9 +15,9 @@ import{EquipmentService} from './services/equipment.service';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
-//----Dialog-----
 import { ListServiceDialogComponent } from './list-service-dialog/list-service-dialog.component';
-// import { AlertModule } from 'ngx-bootstrap';
+import { D3DialogComponent } from './d3-dialog/d3-dialog.component';
+
 export const config={
   
 }
@@ -26,7 +26,8 @@ export const config={
   declarations: [
     AppComponent,
     MapComponent,
-    ListServiceDialogComponent
+    ListServiceDialogComponent,
+    D3DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -36,11 +37,10 @@ export const config={
     BootstrapModule,
     MaterialModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
-    // AlertModule.forRoot()
+    ReactiveFormsModule
    
   ],
-  entryComponents: [ListServiceDialogComponent],
+  entryComponents: [ListServiceDialogComponent,D3DialogComponent],
   providers: [MarkerService,MapService,ListServiceService,EquipmentService],
   bootstrap: [AppComponent]
 })
