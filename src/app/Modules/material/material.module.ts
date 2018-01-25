@@ -11,8 +11,7 @@ import {
   MatSidenavModule,
   MatDialogModule,
   MatListModule,
-  MatGridListModule,
-  MatDialog, MatDialogRef
+  MatGridListModule
   
   } from '@angular/material';
 
@@ -31,8 +30,7 @@ import {
     MatGridListModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule,
-    MatDialog, MatDialogRef
+    MatInputModule
   ],
   exports: [
 
@@ -46,8 +44,7 @@ import {
     MatGridListModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule,
-    MatDialog, MatDialogRef
+    MatInputModule
     ],
     providers:[MatIconRegistry]
 })
