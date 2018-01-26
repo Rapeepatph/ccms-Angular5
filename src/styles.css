@@ -7,3 +7,27 @@
     width: 100%;
     margin: 0;
 }
+.node {
+    cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.node text {
+  font: 12px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+.node alarm {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}

@@ -1,3 +1,4 @@
 a:hover{
     background-color: rgb(150, 161, 224);
+    cursor: pointer;
 }

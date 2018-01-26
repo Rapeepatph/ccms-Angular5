@@ -1,16 +1,14 @@
-
-
 <mat-toolbar class="headerFix" color="primary">
-    <mat-icon fontSet="fa" fontIcon="fa-address-book-o"></mat-icon>
-  <span>{{title}}</span>
+    <mat-icon fontSet="fa" fontIcon="fa-address-book-o">
+        <span>{{title}}</span>
+    </mat-icon>
+    <ul>
+            <li><a routerLink="/home">Home</a></li>
+            <li><a routerLink="/allEquip">All Equipments</a></li>
+    </ul>
 </mat-toolbar>
-
 <div class="afterTopFixed">
-    
-  <app-map></app-map>
-  <div class="col-md-4">
-      <alert type="success">
-          <strong>Well done!</strong> You successfully read this important alert message.
-      </alert>
-  </div>
+    <router-outlet></router-outlet>
 </div>
+<hr>
+<p class="footer">&copy;2018 - RD.AS. Application </p>

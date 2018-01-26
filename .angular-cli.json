@@ -24,7 +24,7 @@
         "styles.css"
       ],
       "scripts": [
-
+        "../node_modules/d3.v3/d3.v3.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

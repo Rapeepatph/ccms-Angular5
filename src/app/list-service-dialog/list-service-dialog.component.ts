@@ -71,11 +71,16 @@ deleteRow(index: number) {
 }
 
 openListD3Dialog(dataOfService:any){
-  console.log('serv',JSON.parse(dataOfService.dataEquipment));
+  // console.log('serv',JSON.parse(dataOfService.dataEquipment));
+  console.log('serv',dataOfService);
   this.d3DialogRef = this.dialog.open(D3DialogComponent,{
     height: '500px',
-    width: '60%',
+    width: '100%',
     data:{
+      idService:dataOfService.id,
+      nameService : dataOfService.name,
+      buildingId : dataOfService.buildingId,
+      dataEquip : dataOfService.dataEquipment
     }
   });
 }

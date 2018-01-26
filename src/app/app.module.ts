@@ -17,6 +17,10 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { ListServiceDialogComponent } from './list-service-dialog/list-service-dialog.component';
 import { D3DialogComponent } from './d3-dialog/d3-dialog.component';
+import { HomeComponent } from './home/home.component';
+import { AllEquipmentsComponent } from './all-equipments/all-equipments.component';
+
+import { AppRoutingModule } from './/app-routing.module';
 
 export const config={
   
@@ -27,7 +31,9 @@ export const config={
     AppComponent,
     MapComponent,
     ListServiceDialogComponent,
-    D3DialogComponent
+    D3DialogComponent,
+    HomeComponent,
+    AllEquipmentsComponent
   ],
   imports: [
     BrowserModule,
@@ -37,8 +43,8 @@ export const config={
     BootstrapModule,
     MaterialModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
-   
+    ReactiveFormsModule,
+    AppRoutingModule
   ],
   entryComponents: [ListServiceDialogComponent,D3DialogComponent],
   providers: [MarkerService,MapService,ListServiceService,EquipmentService],
