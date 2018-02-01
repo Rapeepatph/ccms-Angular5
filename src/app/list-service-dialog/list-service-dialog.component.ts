@@ -25,6 +25,7 @@ export class ListServiceDialogComponent implements OnInit {
   arrayEquipment : any = null;
   ServiceName:any;
   isOpen:boolean = true;
+  isHided:boolean=true;
 
   d3DialogRef : MatDialogRef<D3DialogComponent>;
   constructor(private _listService : ListServiceService,
@@ -74,7 +75,7 @@ openListD3Dialog(dataOfService:any){
   // console.log('serv',JSON.parse(dataOfService.dataEquipment));
   console.log('serv',dataOfService);
   this.d3DialogRef = this.dialog.open(D3DialogComponent,{
-    height: '500px',
+    height: 'auto',
     width: '100%',
     data:{
       idService:dataOfService.id,
@@ -97,6 +98,7 @@ onCloseConfirm() {
     this._listService.addService({Name:this.ServiceName,BuildingId:this.data.idBuilding,DataEquipment:JSON.stringify(control.value)}).subscribe(
       data =>{
         alert('Service Added Successfully!');
+        this.getServiceByBuilding();
       },
       error => {
         alert("Error saving Service!");
@@ -104,7 +106,8 @@ onCloseConfirm() {
     }
 
     );
-    this.dialogRef.close('Confirm');
+    
+    // this.dialogRef.close('Confirm');
   }
 
 onCloseCancel() {

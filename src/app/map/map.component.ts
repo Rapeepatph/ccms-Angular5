@@ -38,7 +38,7 @@ export class MapComponent implements OnInit {
 
   openListServiceDialog(id : number,nameOfBuilding : string){
     this.listServiceDialogRef = this.dialog.open(ListServiceDialogComponent,{
-      height: '1000px',
+      height: 'auto',
       width: '40%',
       data:{
         idBuilding:id,
@@ -53,8 +53,8 @@ export class MapComponent implements OnInit {
       container: 'map',
       style: 'mapbox://styles/mapbox/dark-v9',
       zoom: 15,
-      center:  [102.788247, 17.386526], // starting position
-      bearing: 28 // bearing in degrees
+      center:  [102.786983, 17.384628], // starting position
+      bearing: 27.5 // bearing in degrees
     });
 
 

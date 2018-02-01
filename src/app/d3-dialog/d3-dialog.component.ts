@@ -1,5 +1,6 @@
 import { Component, OnInit ,Inject,ViewChild,ElementRef} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import * as $ from 'jquery';
 
 
 declare var d3:any;  //import * as d3 from '../../../node_modules/d3.v3/d3.v3.min.js';
@@ -22,8 +23,10 @@ export class D3DialogComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.data);
-    this.widthModal=1523;
+    this.widthModal=$("#tree-diagram").width();
+    console.log('datajson',JSON.parse(this.data.dataEquip));
     var treeData =this.changeDataToTreeData(JSON.parse(this.data.dataEquip));
+    console.log('treeData',treeData);
     this.generate(treeData,this.data.nameService,this.widthModal);
   }
   changeDataToTreeData(data) {
@@ -31,7 +34,7 @@ export class D3DialogComponent implements OnInit {
         map[node.name] = node;
         return map;
     }, {});
-
+console.log('datamap',dataMap);
     var treeData = [];
     data.forEach(function (node) {
         // add to parent

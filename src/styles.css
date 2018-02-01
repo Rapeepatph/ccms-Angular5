@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 /* Add Material Icons */
 /* @import '~https://fonts.googleapis.com/icon?family=Material+Icons'; */
 
 ิbody{
     width: 100%;
-    margin: 0;
 }
 .node {
     cursor: pointer;
@@ -31,3 +31,4 @@
   stroke: steelblue;
   stroke-width: 3px;
 }
+[hidden] { display: none !important;}

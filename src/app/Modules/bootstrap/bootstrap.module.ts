@@ -2,16 +2,19 @@ import { NgModule } from '@angular/core';
 
 
 import{AlertModule,
-  CollapseModule 
+  CollapseModule ,
+  TooltipModule 
 } from 'ngx-bootstrap'
 @NgModule({
   imports: [
     AlertModule.forRoot(),
-    CollapseModule .forRoot()
+    CollapseModule .forRoot(),
+    TooltipModule.forRoot()
   ],
   exports:[
     AlertModule,
-    CollapseModule 
+    CollapseModule ,
+    TooltipModule
   ],
 
   declarations: []

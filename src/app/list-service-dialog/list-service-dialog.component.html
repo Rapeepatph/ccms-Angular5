@@ -1,13 +1,14 @@
 
 <div class="modal-header">
   <h4 class="modal-title pull-left">
-      Location = {{nameBuilding}}
+      {{nameBuilding}} Building !
   </h4>
   <button type="button" class="close pull-right" aria-label="Close" (click)="onCloseCancel()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
+<div class="modal-body" >
+    <strong>List of Services</strong><br>
     <div class="list-group" *ngFor="let serv of arrayServices">
       <div class="row">
           <div class="col-md-6">
@@ -15,18 +16,26 @@
                   {{serv.name}}
                </a>
           </div>
-          <div class="col-md-6">
-            <button mat-icon-button color='primary' (click)='DeleteService(serv)'>
+          <div class="col-md-6" [hidden]="isHided">
+            <button mat-icon-button color='primary' (click)='DeleteService(serv)' tooltip="Delete Service.">
               <mat-icon fontSet="fa" fontIcon="fa-window-close"></mat-icon>
             </button>
           </div>
       </div>
     </div >
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info" (click)="isHided = !isHided">Edit
+                    <i class="fa fa-scissors" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
 </div>
 <hr>
 <div class="row">
   <div class="col-md-3">
-    <button type="button" class="btn btn-primary btn-md"
+    <button type="button" class="btn btn-primary btn-md" [hidden]="isHided"
       (click)="isOpen = !isOpen">Add Service
     </button>
   </div>
@@ -42,9 +51,6 @@
           <div class="row"  >
               <div class="col-md-6">
                   <strong>Equipment</strong>
-                </div>
-                <div class="col-md-6">
-                    <button type="button" (click)="addNewRow()" class="btn btn-primary">+</button>
                 </div>
           </div>
           <div class="row"  >
@@ -74,11 +80,10 @@
           <div class="row">
             <div class="col-md-9">
                 <button type="button" class="btn btn-primary" (click)="onCloseConfirm()">CONFIRM</button>&nbsp;
-                <button type="button" (click)="addNewRow()" class="btn btn-primary">+</button>
+                <button type="button" class="btn btn-success" (click)="addNewRow()" >+</button>
             </div>
           </div>
-          {{invoiceForm.value|json}}
+          <!-- {{invoiceForm.value|json}} -->
       </div>
-      
   </div>
 </div>

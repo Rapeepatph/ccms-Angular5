@@ -1,4 +1,4 @@
-.headerFix {
+/* .headerFix {
     position: fixed;
     top: 0;
     left: 0;
@@ -6,6 +6,7 @@
     background-color: darkslateblue;
   }
   .afterTopFixed{
+      width: 100%;
       margin-top: 60px;
   }
   .mat-icon{
@@ -38,8 +39,13 @@ li a {
 
 li a:hover {
     background-color: rgb(74, 52, 136);
-}
+} */
+
 .footer{
   margin-left: 10px;
-  font-family: Arial, Helvetica, sans-serif
+  font-family: Arial, Helvetica, sans-serif;
+  
+}
+.container-fluid{
+    padding: 0px;
 }
