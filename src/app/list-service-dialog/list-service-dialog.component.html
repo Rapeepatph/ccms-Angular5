@@ -33,9 +33,9 @@
     </div>
 </div>
 <hr>
-<div class="row">
+<div class="row" [hidden]="isHided">
   <div class="col-md-3">
-    <button type="button" class="btn btn-primary btn-md" [hidden]="isHided"
+    <button type="button" class="btn btn-primary btn-md" 
       (click)="isOpen = !isOpen">Add Service
     </button>
   </div>
