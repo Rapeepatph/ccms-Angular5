@@ -101,8 +101,8 @@ onCloseConfirm() {
         this.getServiceByBuilding();
       },
       error => {
-        alert("Error saving Service!");
-        console.error("Error saving Service!");
+        alert("Error saving Service!"+",status code :"+ error.status+"("+error.statusText+")");
+        console.error("Error saving Service!",error);
     }
 
     );

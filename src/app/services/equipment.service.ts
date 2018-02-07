@@ -12,4 +12,10 @@ export class EquipmentService {
               .get('/api/Equipments')
               .map(response => {return response.json();});
   }
+  getStatus(nameEquip):Observable<any>{
+    return this._http
+                .get('/api/Equipments/GetStatus/'+nameEquip)
+                .map(response => {return response.json();});
+  }
+
 }
