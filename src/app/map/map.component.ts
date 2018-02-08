@@ -20,6 +20,7 @@ export class MapComponent implements OnInit {
   // data
   data:any;
   source: any;
+  buildingImageUrl = require("../images/Yellowcity.png");
 
   listServiceDialogRef : MatDialogRef<ListServiceDialogComponent>;
 
@@ -59,33 +60,51 @@ export class MapComponent implements OnInit {
 
 
     this.map.on('load', (event)=>{
-      /// register source
-      this.map.addSource('firebase', {
-        type: 'geojson',
-        data:{
-          "type": "FeatureCollection",
-          "features":this.data
-        }
-      });
+      ///******* register source
+      // this.map.addSource('firebase', {
+      //   type: 'geojson',
+      //   data:{
+      //     "type": "FeatureCollection",
+      //     "features":this.data
+      //   }
+      // });
       
       
-      this.map.addLayer({
-        id: 'marker',
-        source: 'firebase',
-        type: 'circle',
-        // layout: {
-        //   'text-size': 40,
-        //   'text-transform': 'uppercase',
-        //   'icon-image': 'building',
-        //   'text-offset': [0, 1.5]
-        // },
-        paint: {
-          "circle-radius": 8,
-        "circle-radius-transition": { duration: 0 },
-        "circle-opacity-transition": { duration: 0 },
-        "circle-color": "#007cbf"
-        }
+      // this.map.addLayer({
+      //   id: 'marker',
+      //   source: 'firebase',
+      //   type: 'circle',
+      //   paint: {
+      //     "circle-radius": 8,
+      //   "circle-radius-transition": { duration: 0 },
+      //   "circle-opacity-transition": { duration: 0 },
+      //   "circle-color": "#007cbf"
+      //   }
+      // })
+      this.map.loadImage(this.buildingImageUrl,(error,image)=>{
+        if (error) throw error;
+        this.map.addSource('firebase', {
+          type: 'geojson',
+          data:{
+            "type": "FeatureCollection",
+            "features":this.data
+          }
+        });
+
+        this.map.addImage('building', image);
+        this.map.addLayer({
+            id: 'marker',
+            source: 'firebase',
+            type: 'symbol',
+            "layout": {
+              "icon-image": "building",
+              "icon-size": 0.08
+          }
+          })
+
       })
+
+
       let popup = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false

@@ -1,6 +1,6 @@
 
 <div class="modal-header">
-  <h4 class="modal-title pull-left">
+  <h4 class="modal-title pull-left" style="padding-left:0px">
       {{nameBuilding}} Building !
   </h4>
   <button type="button" class="close pull-right" aria-label="Close" (click)="onCloseCancel()">
@@ -8,7 +8,7 @@
   </button>
 </div>
 <div class="modal-body" >
-    <strong>List of Services</strong><br>
+    <strong style="padding-left:5px">List of Services</strong><br><br>
     <div class="list-group" *ngFor="let serv of arrayServices">
       <div class="row">
           <div class="col-md-6">
