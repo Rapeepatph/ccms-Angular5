@@ -6,7 +6,7 @@ export class MarkerService {
 
   constructor() { }
 
-  test(arrayMarkers : Array<Marker>){
+  MakeGeoJson(arrayMarkers : Array<Marker>){
     let featureData = [];
     for(let markerObj of arrayMarkers){
       let obj = {
