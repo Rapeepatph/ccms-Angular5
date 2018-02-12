@@ -6,7 +6,7 @@ export class MarkerService {
 
   constructor() { }
 
-  MakeGeoJson(arrayMarkers : Array<Marker>){
+  MakeArrayGeoJson(arrayMarkers : Array<Marker>){
     let featureData = [];
     for(let markerObj of arrayMarkers){
       let obj = {
@@ -27,5 +27,23 @@ export class MarkerService {
 
     return featureData;
   }
+
+  MakeGeoJson(marker:Marker){
+    let obj = {
+      "type": 'Feature',
+      'properties':{
+        id:marker.id,
+        name:marker.name
+      },
+      'geometry':{
+        "type": "Point",
+        'coordinates':[
+          marker.lng,marker.lat
+        ]
+      }
+    }
+    return obj;
+  }
+
 
 }

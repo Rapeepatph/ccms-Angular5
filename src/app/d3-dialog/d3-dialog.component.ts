@@ -176,7 +176,7 @@ console.log('source',source);
         .attr("r", 10)
         .style("fill",  (d)=> {
             if (d.status == 3) return "yellow";
-            return d.status == 1 ? "red" : "#fff";
+            return d.status == 2 ? "red" : "#fff";
         });
 
     nodeUpdate.select("text")
@@ -234,7 +234,7 @@ click(d){
     
         console.log('d click',d);
         if (d.status == 1){
-            d.status = 0;
+            d.status = 2;
         }
         else {
             d.status = 1;

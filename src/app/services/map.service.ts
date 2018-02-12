@@ -14,5 +14,10 @@ export class MapService {
             .get('/api/Buildings')
             .map(response => { return response.json(); });
   }
+  getStatus(buildingId):Observable<any>{
+    return this._http
+               .get('/api/Buildings/GetStatus/'+buildingId)
+               .map(response =>{return response});
+  }
 
 }
