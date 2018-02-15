@@ -11,14 +11,20 @@
     <strong style="padding-left:5px">List of Services</strong><br><br>
     <div class="list-group" *ngFor="let serv of arrayServices">
       <div class="row">
-          <div class="col-md-6">
-              <a  class="list-group-item" (click)='openListD3Dialog(serv)'>
-                  {{serv.name}}
-               </a>
+          <div class="col-md-3">
+              <a  class="list-group-item" (click)='openListD3Dialog(serv)' [ngStyle]="changeBackGround(serv.status)">
+                    <b>{{serv.name}}</b>
+              </a>
           </div>
-          <div class="col-md-6" [hidden]="isHided">
-            <button mat-icon-button color='primary' (click)='DeleteService(serv)' tooltip="Delete Service.">
-              <mat-icon fontSet="fa" fontIcon="fa-window-close"></mat-icon>
+          <!-- <div class="col-md-3" *ngIf="serv.status==1" style="padding:10px; color:rgb(150, 218, 123)">
+                <i class="fa fa-thumbs-up">{{updateStatus(serv.status)}}</i>
+          </div>
+          <div class="col-md-3" style="padding:10px; color:Tomato" *ngIf="serv.status!=1">
+                <i class="fa fa-exclamation-triangle">{{updateStatus(serv.status)}}</i>
+          </div> -->
+          <div class="col-md-6" [hidden]="isHided" style="padding-top:5px">
+            <button type="button" class="btn btn-info" (click)='DeleteService(serv)' tooltip="Delete Service." >
+                    <i class="fa fa-trash fa-lg"></i>
             </button>
           </div>
       </div>

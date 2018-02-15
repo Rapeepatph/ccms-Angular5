@@ -9,6 +9,7 @@ import {EquipmentService} from '../services/equipment.service'
 
 import{D3DialogComponent} from '../d3-dialog/d3-dialog.component'
 
+
 @Component({
   selector: 'app-list-service-dialog',
   templateUrl: './list-service-dialog.component.html',
@@ -26,7 +27,8 @@ export class ListServiceDialogComponent implements OnInit {
   ServiceName:any;
   isOpen:boolean = true;
   isHided:boolean=true;
-
+  backGdColor:string='red';
+  test:number=0;
   d3DialogRef : MatDialogRef<D3DialogComponent>;
   constructor(private _listService : ListServiceService,
               private _equipmentService : EquipmentService,
@@ -47,7 +49,7 @@ export class ListServiceDialogComponent implements OnInit {
     this.invoiceForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows(null)])
     });
-    
+    this.LoopCheckStatus();
   }
   initItemRows(res:any) {
     return this._fb.group({
@@ -55,6 +57,47 @@ export class ListServiceDialogComponent implements OnInit {
       name:[null]
     });
 }
+LoopCheckStatus(){
+  setInterval(()=>{
+    for(let service of this.arrayServices){
+      this._listService.getStatusService(service.id).subscribe(
+        res=>{
+          var  data = parseInt(res._body,10); 
+          service.status = data;
+        },
+        error=>{console.error("Error get service status!",error);}
+      )
+    }
+    
+  },5000)
+}
+changeBackGround(status){
+  if(status==0)
+    return {background:'darkgrey'};
+  else if(status==1)
+    return {background:'chartreuse'};
+  else if(status==2)
+    return {background:'rgb(230, 95, 86)'}
+  else if(status==3)
+    return {background:'rgb(247, 250, 92)'}
+  else if(status==4)
+    return {background:'Magenta'}
+}
+
+updateStatus(status){
+  if(status==0)
+    return 'Unknown';
+  else if(status==1)
+    return 'Normal';
+  else if(status==2)
+    return 'Alarm';
+  else if(status==3)
+    return 'Warning';
+  else if(status==4)
+    return 'Maintenance';
+}
+
+
 addNewRow() {
   let res=null;
         const control = <FormArray>this.invoiceForm.controls['itemRows'];

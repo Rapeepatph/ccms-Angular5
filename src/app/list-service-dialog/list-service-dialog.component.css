@@ -1,7 +1,9 @@
 a:hover{
-    background-color: rgb(150, 161, 224);
+    opacity: 0.5;
+	
     cursor: pointer;
 }
 strong{
     padding-left: 20px;
 }
+

@@ -176,7 +176,10 @@ console.log('source',source);
         .attr("r", 10)
         .style("fill",  (d)=> {
             if (d.status == 3) return "yellow";
-            return d.status == 2 ? "red" : "#fff";
+            else if(d.status==1) return "#fff";
+            else if(d.status ==0 ) return "DarkGrey ";
+            // return d.status == 2 ? "red" : "Magenta";
+            else if(d.status==2) return "red";
         });
 
     nodeUpdate.select("text")

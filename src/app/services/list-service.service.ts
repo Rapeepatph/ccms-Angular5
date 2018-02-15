@@ -15,6 +15,12 @@ export class ListServiceService {
            .get('/api/services/ByBuildingId?buildingId='+id)
            .map(response => { return response.json(); });
  }
+ getStatusService(id:number):Observable<any>{
+   return this._http
+              .get('/api/Services/GetStatus/'+id)
+              .map(response => {return response})
+ }
+
  addService(service ){
    let headers = new Headers({ 'Content-Type': 'application/json' });
    let options = new RequestOptions({ headers: headers });
@@ -25,4 +31,9 @@ export class ListServiceService {
  deleteService(serviceId){
    return this._http.delete('/api/Services/'+serviceId);
  }
+
+  colorStatus(){
+    var color =['DarkGrey ','LimeGreen ','Red','Yellow','Magenta'];
+    return color;
+  }
 }

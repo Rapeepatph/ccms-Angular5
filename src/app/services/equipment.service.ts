@@ -23,4 +23,6 @@ export class EquipmentService {
     let body = JSON.stringify(equip);
     return this._http.put('/api/Equipments/'+equip.Id,body,options).map((res: Response) => res.json())
   }
+
+  
 }

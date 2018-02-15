@@ -29,7 +29,7 @@ export class MapComponent implements OnInit {
   opacity = this.initialOpacity;
   initialRadius = 10;
   radius = this.initialRadius;
-  maxRadius = 18;
+  maxRadius = 30;
 
   
 
@@ -102,7 +102,7 @@ export class MapComponent implements OnInit {
               },
           type: 'circle',
           paint: {
-            "circle-radius": 30,
+            "circle-radius": 70,
           "circle-radius-transition": { duration: 0 },
           "circle-opacity-transition": { duration: 0 },
           "circle-color": "#7FFF00"
@@ -232,7 +232,8 @@ export class MapComponent implements OnInit {
   checkStatus(){
     var i=0;
     setInterval(()=>{ 
-      var color =['Cyan','Blue','Red','Yellow','Magenta'];
+      //var color =['Cyan','Blue','Red','Yellow','Magenta'];
+      var color = this._listService.colorStatus();
       this.buildingArray.forEach(element => {
         this._mapService.getStatus(element.id).subscribe(
           res=>{
@@ -245,28 +246,6 @@ export class MapComponent implements OnInit {
           }
         )
       });
-
-      // var color =['Red','Yellow','Cyan','Blue','Magenta'];
-      // if(i<color.length){
-      //   this.map.setPaintProperty('VOR', 'circle-color', color[i]);
-      //   this.map.setPaintProperty('VOR1', 'circle-color', color[i]);
-      //   i++;
-      // }
-      // else{
-      //   i=0;
-      // }
-
-
-        // for(let building of this.buildingArray){
-        //   this._listService.getServicesByBuildingId(building.id).subscribe(
-        //     res=>{
-        //       console.log('res from map ',res);
-        //     },
-        //     error=>{
-        //       console.error('Can not checkstatus each building!',error)
-        //     }
-        //   )
-        // }
       }, 20000
     );
   }
