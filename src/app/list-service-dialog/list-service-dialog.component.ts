@@ -59,17 +59,28 @@ export class ListServiceDialogComponent implements OnInit {
 }
 LoopCheckStatus(){
   setInterval(()=>{
-    for(let service of this.arrayServices){
-      this._listService.getStatusService(service.id).subscribe(
-        res=>{
-          var  data = parseInt(res._body,10); 
-          service.status = data;
-        },
-        error=>{console.error("Error get service status!",error);}
-      )
-    }
-    
+    // for(let service of this.arrayServices){
+    //   this._listService.getStatusService(service.id).subscribe(
+    //     res=>{
+    //       var  data = parseInt(res._body,10); 
+    //       service.status = data;
+    //     },
+    //     error=>{console.error("Error get service status!",error);}
+    //   )
+    // }
+    this.checkStatus();
   },5000)
+}
+checkStatus(){
+  for(let service of this.arrayServices){
+    this._listService.getStatusService(service.id).subscribe(
+      res=>{
+        var  data = parseInt(res._body,10); 
+        service.status = data;
+      },
+      error=>{console.error("Error get service status!",error);}
+    )
+  }
 }
 changeBackGround(status){
   if(status==0)
@@ -131,7 +142,9 @@ openListD3Dialog(dataOfService:any){
 
 getServiceByBuilding(){
     this._listService.getServicesByBuildingId(this.data.idBuilding).subscribe(
-      res=>this.arrayServices = res,
+      res=>{this.arrayServices = res;
+        this.checkStatus();
+      },
       error=>console.error('Can not get service by building id!')
     )
   }
