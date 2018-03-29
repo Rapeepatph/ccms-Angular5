@@ -25,10 +25,12 @@ export class ListServiceDialogComponent implements OnInit {
   arrayServices:any = null;
   arrayEquipment : any = null;
   ServiceName:any;
+  functionService:any=['main','stdby'];
+  selectFunctionService:string=this.functionService[0];
+  headerArrayEquipment:any=null;
   isOpen:boolean = true;
   isHided:boolean=true;
-  backGdColor:string='red';
-  test:number=0;
+  addEquip:boolean=false;
   d3DialogRef : MatDialogRef<D3DialogComponent>;
   constructor(private _listService : ListServiceService,
               private _equipmentService : EquipmentService,
@@ -46,16 +48,46 @@ export class ListServiceDialogComponent implements OnInit {
       res =>this.arrayEquipment=res,
       error =>console.error('Can not get All Equipments')
     )
-    this.invoiceForm = this._fb.group({
-      itemRows: this._fb.array([this.initItemRows(null)])
-    });
+    
     this.LoopCheckStatus();
   }
-  initItemRows(res:any) {
-    return this._fb.group({
-      parent:[res],
-      name:[null]
+
+addEquipments(){
+  if(this.addEquip){
+    
+    this.addEquip=false;
+  }
+  else{
+    
+    this.invoiceForm = this._fb.group({
+      itemRows: this._fb.array([this.initItemRows(this.selectFunctionService)])
     });
+   
+    this.addEquip=true;
+  }
+    
+}
+checkEquipment(index){
+  const control = <FormArray>this.invoiceForm.controls['itemRows'];
+  if(index>=0){
+    if(control.value[index-1].name) 
+      return false;
+    else
+      return true;
+  }
+  return true;
+}
+createdHeaderData(){
+  this.headerArrayEquipment=[
+    {parent:null,name:this.ServiceName},
+    {parent:this.ServiceName,name:this.selectFunctionService}
+  ];
+}
+initItemRows(res:any) {
+  return this._fb.group({
+    parent:[res],
+    name:[null]
+  });
 }
 LoopCheckStatus(){
   setInterval(()=>{
@@ -112,11 +144,8 @@ updateStatus(status){
 addNewRow() {
   let res=null;
         const control = <FormArray>this.invoiceForm.controls['itemRows'];
-        console.log('control',control)
         const index = control.value.length-1
-        console.log('index',index)
         if(index>=0) res=control.value[index].name 
-        console.log(res);
         control.push(this.initItemRows(res));
 }
 
@@ -150,11 +179,18 @@ getServiceByBuilding(){
   }
 
 onCloseConfirm() {
-    const control = <FormArray>this.invoiceForm.controls['itemRows'];
+  this.createdHeaderData();
+    var control = <FormArray>this.invoiceForm.controls['itemRows'];
+    // var arrConcat = this.headerArrayEquipment.concat(control.value);
+    // console.log('arrConcat',arrConcat);
+
+
     this._listService.addService({Name:this.ServiceName,BuildingId:this.data.idBuilding,DataEquipment:JSON.stringify(control.value)}).subscribe(
       data =>{
         alert('Service Added Successfully!');
         this.getServiceByBuilding();
+        this.ServiceName=null;
+        this.addEquip=false;
       },
       error => {
         alert("Error saving Service!"+",status code :"+ error.status+"("+error.statusText+")");

@@ -18,6 +18,7 @@ import {
   import {MatFormFieldModule} from '@angular/material/form-field';
   import {MatSelectModule} from '@angular/material/select';
   import {MatInputModule} from '@angular/material/input';
+  import {MatRadioModule} from '@angular/material/radio';
 @NgModule({
   imports: [
     MatButtonModule,
@@ -30,7 +31,8 @@ import {
     MatGridListModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatRadioModule
   ],
   exports: [
 
@@ -44,7 +46,8 @@ import {
     MatGridListModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatRadioModule
     ],
     providers:[MatIconRegistry]
 })

@@ -6,4 +6,16 @@ a:hover{
 strong{
     padding-left: 20px;
 }
-
+.example-radio-group {
+    display: inline-flex;
+    flex-direction: row;
+    margin-top:10px;
+  }
+  
+  .example-radio-button {
+    margin-left:5px;
+  }
+  
+  .example-selected-value {
+    margin: 15px 0;
+  }
