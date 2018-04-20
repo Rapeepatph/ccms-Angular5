@@ -47,12 +47,13 @@ export class MapComponent implements OnInit {
         this.data = this._markerService.MakeArrayGeoJson(res);
         console.log('coorFromDb',res);
         this.buildingArray=res;
+        this.buildMap();
       },
       error=>console.error(error.message)
     );
 
-    this.buildMap();
-    this.checkStatus();
+    
+    this.LoopcheckStatus();
   }
 
   openListServiceDialog(id : number,nameOfBuilding : string){
@@ -150,7 +151,7 @@ export class MapComponent implements OnInit {
       
     
       this.animateMarker(0);
-      
+      this.checkStatus();
       
 
 
@@ -229,27 +230,47 @@ export class MapComponent implements OnInit {
     
 }
 
-  checkStatus(){
-    var i=0;
+  LoopcheckStatus(){
     setInterval(()=>{ 
-      //var color =['Cyan','Blue','Red','Yellow','Magenta'];
-      var color = this._listService.colorStatus();
-      this.buildingArray.forEach(element => {
-        this._mapService.getStatus(element.id).subscribe(
-          res=>{
-            var  data = parseInt(res._body,10); 
-            this.map.setPaintProperty(element.name, 'circle-color', color[data]);
-            this.map.setPaintProperty(element.name+'1', 'circle-color', color[data]);
-          },
-          error=>{
-            console.error("Error get status by buildingId!",error);
-          }
-        )
-      });
+      this.checkStatus();
+      // var color = this._listService.colorStatus();
+      // this.buildingArray.forEach(element => {
+      //   this._mapService.getStatus(element.id).subscribe(
+      //     res=>{
+      //       if(res._body!=null){
+      //         var  data = parseInt(res._body,10); 
+      //         this.map.setPaintProperty(element.name, 'circle-color', color[data]);
+      //         this.map.setPaintProperty(element.name+'1', 'circle-color', color[data]);
+      //       }
+      //     },
+      //     error=>{
+      //       console.error("Error get status by buildingId!",error);
+      //     }
+      //   )
+      // });
       }, 20000
     );
   }
-   
+  
+
+  checkStatus(){
+    var color = this._listService.colorStatus();
+    this.buildingArray.forEach(element => {
+      this._mapService.getStatus(element.id).subscribe(
+        res=>{
+          if(res._body!=null){
+            var  data = parseInt(res._body,10); 
+            this.map.setPaintProperty(element.name, 'circle-color', color[data]);
+            this.map.setPaintProperty(element.name+'1', 'circle-color', color[data]);
+          }
+        },
+        error=>{
+          console.error("Error get status by buildingId!",error);
+        }
+      )
+    });
+  }
+  
 
 
 }

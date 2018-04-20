@@ -13,7 +13,8 @@ import{D3DialogComponent} from '../d3-dialog/d3-dialog.component'
 @Component({
   selector: 'app-list-service-dialog',
   templateUrl: './list-service-dialog.component.html',
-  styleUrls: ['./list-service-dialog.component.css']
+  styleUrls: ['./list-service-dialog.component.css'],
+ 
 })
 export class ListServiceDialogComponent implements OnInit {
   
@@ -25,6 +26,7 @@ export class ListServiceDialogComponent implements OnInit {
   arrayServices:any = null;
   arrayEquipment : any = null;
   ServiceName:any;
+  mainServiceSelected:any=null;
   functionService:any=['main','stdby'];
   selectFunctionService:string=this.functionService[0];
   headerArrayEquipment:any=null;
@@ -67,6 +69,39 @@ addEquipments(){
   }
     
 }
+checkConfirm(){
+  // if(this.ServiceName!=null){
+  //   if(this.selectFunctionService=='stdby'){
+  //     if(this.mainServiceSelected != null){
+  //       return false;
+  //     }
+  //     return true;
+  //   }
+  //   return false;
+  // }
+  // else{
+  //   return true;
+  // }
+  if(this.selectFunctionService=='stdby'){
+    if(this.mainServiceSelected){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+  else if(this.selectFunctionService=='main'){
+    if(this.ServiceName){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+  else{
+    return true;
+  }
+}
 checkEquipment(index){
   const control = <FormArray>this.invoiceForm.controls['itemRows'];
   if(index>=0){
@@ -77,11 +112,20 @@ checkEquipment(index){
   }
   return true;
 }
-createdHeaderData(){
-  this.headerArrayEquipment=[
-    {parent:null,name:this.ServiceName},
-    {parent:this.ServiceName,name:this.selectFunctionService}
-  ];
+createdHeaderData(data,countService){
+  if(countService>1){
+    this.headerArrayEquipment=[
+      {parent:null,name:data.name},
+      {parent:data.name,name:this.functionService[0]},
+      {parent:data.name,name:this.functionService[1]}
+    ];
+  }
+   else{
+    this.headerArrayEquipment=[
+      {parent:null,name:data.name},
+      {parent:data.name,name:this.functionService[0]}
+    ];
+   } 
 }
 initItemRows(res:any) {
   return this._fb.group({
@@ -120,7 +164,7 @@ changeBackGround(status){
   else if(status==1)
     return {background:'chartreuse'};
   else if(status==2)
-    return {background:'rgb(230, 95, 86)'}
+    return {background:'rgb(230, 95, 86)', color:'#fff'}
   else if(status==3)
     return {background:'rgb(247, 250, 92)'}
   else if(status==4)
@@ -145,8 +189,12 @@ addNewRow() {
   let res=null;
         const control = <FormArray>this.invoiceForm.controls['itemRows'];
         const index = control.value.length-1
-        if(index>=0) res=control.value[index].name 
-        control.push(this.initItemRows(res));
+        
+        if(index>=0) {
+          res=control.value[index].name 
+          control.push(this.initItemRows(res));
+        }
+       
 }
 
 deleteRow(index: number) {
@@ -155,8 +203,48 @@ deleteRow(index: number) {
 }
 
 openListD3Dialog(dataOfService:any){
+  
   // console.log('serv',JSON.parse(dataOfService.dataEquipment));
-  console.log('serv',dataOfService);
+  let arrayService:any=[] ;
+  
+  this._listService.getServiceByMainServiceId(dataOfService.id).subscribe(
+    data=>{
+      this.createdHeaderData(dataOfService,data.length);
+      for(let serv of data){
+        var jsonDataEquip = JSON.parse(serv.dataEquipment);
+        arrayService= arrayService.concat(jsonDataEquip);
+      }
+      var arrConcat = this.headerArrayEquipment.concat(arrayService);
+      console.log('arrconcat',arrConcat);
+      var i=0;
+      var stdbyIndex = arrConcat.findIndex(x=>x.parent==="stdby")
+      for(let obj of arrConcat){
+        if(i>(this.headerArrayEquipment.length-1) ){
+          obj.counting = i;
+        }
+        if(i>=stdbyIndex&&stdbyIndex>0){
+          obj.type='stdby';
+        }
+        i++;
+        if(i>=arrConcat.length){
+          
+          this.createDialogRef(dataOfService,arrConcat);
+          
+        }
+      }
+      
+      
+    },
+    error=>{
+      console.error("Error deleting Service!"); 
+      alert(error);
+    }
+  )
+  //console.log('serv',dataOfService);
+  
+}
+
+createDialogRef(dataOfService,arrConcat){
   this.d3DialogRef = this.dialog.open(D3DialogComponent,{
     height: 'auto',
     width: '100%',
@@ -164,14 +252,16 @@ openListD3Dialog(dataOfService:any){
       idService:dataOfService.id,
       nameService : dataOfService.name,
       buildingId : dataOfService.buildingId,
-      dataEquip : dataOfService.dataEquipment
+      dataEquip : arrConcat,
+      headerEquipLength:this.headerArrayEquipment.length
     }
   });
 }
 
 getServiceByBuilding(){
     this._listService.getServicesByBuildingId(this.data.idBuilding).subscribe(
-      res=>{this.arrayServices = res;
+      res=>{
+        this.arrayServices = res;
         this.checkStatus();
       },
       error=>console.error('Can not get service by building id!')
@@ -179,39 +269,65 @@ getServiceByBuilding(){
   }
 
 onCloseConfirm() {
-  this.createdHeaderData();
-    var control = <FormArray>this.invoiceForm.controls['itemRows'];
+  //this.createdHeaderData();
+    //var control = <FormArray>this.invoiceForm.controls['itemRows'];
     // var arrConcat = this.headerArrayEquipment.concat(control.value);
     // console.log('arrConcat',arrConcat);
-
-
-    this._listService.addService({Name:this.ServiceName,BuildingId:this.data.idBuilding,DataEquipment:JSON.stringify(control.value)}).subscribe(
-      data =>{
-        alert('Service Added Successfully!');
-        this.getServiceByBuilding();
-        this.ServiceName=null;
-        this.addEquip=false;
-      },
-      error => {
-        alert("Error saving Service!"+",status code :"+ error.status+"("+error.statusText+")");
-        console.error("Error saving Service!",error);
+    if(this.selectFunctionService=='main'){
+      this._listService.addMainService({Name:this.ServiceName,BuildingId:this.data.idBuilding}).subscribe(
+        data=>{
+          this.addService(data.id,data.name,1);  // 1 is Main
+        },
+        error=>{
+          alert("Error saving MainService!"+",status code :"+ error.status+"("+error.statusText+")");
+        }
+      )
+    }
+    else{
+      this.addService(this.mainServiceSelected.id,this.mainServiceSelected.name+'Stdby',0);  //0 is StandBy
     }
 
-    );
+    
     
     // this.dialogRef.close('Confirm');
   }
+addService(mainServiceId,name,isSelected){
+  var control = <FormArray>this.invoiceForm.controls['itemRows'];
+  this._listService.addService({Name:name,MainServiceId:mainServiceId,IsSelected:isSelected,DataEquipment:JSON.stringify(control.value)}).subscribe(
+    data =>{
+      alert('Service Added Successfully!');
+      this.getServiceByBuilding();
+      this.ServiceName=null;
+      this.addEquip=false;
+      this.mainServiceSelected=null;
+    },
+    error => {
+      alert("Error saving Service!"+",status code :"+ error.status+"("+error.statusText+")");
+      console.error("Error saving Service!",error);
+    }
 
+  );
+}
 onCloseCancel() {
     this.dialogRef.close('Cancel');
   }
 
 DeleteService(service){
     if (confirm("Are you sure you want to delete Service '" + service.name + "'?")){
-      this._listService.deleteService(service.id).subscribe(
+      this._listService.getServiceByMainServiceId(service.id).subscribe(
         data=>{
-          alert('Service Deleted Successfully!');
-          this.getServiceByBuilding()
+          var i=0;
+          var last = false;
+          for(let serv of data){
+            i++;
+            if(i==data.length){
+              last=true;
+              this.deleteServ(serv.id,last,service.id);
+            }
+            else{
+              this.deleteServ(serv.id,last,service.id);
+            }
+          }
         },
         error=>{
           console.error("Error deleting Service!"); 
@@ -219,5 +335,32 @@ DeleteService(service){
         }
       )
     }
+  }
+
+  deleteServ(id,last,mainServiceId){
+    this._listService.deleteService(id).subscribe(
+      data=>{
+        console.log('Service Deleted Success')
+        if(last){
+          this.deleteMainserv(mainServiceId);
+        }
+      },
+      error=>{
+        console.error("Error deleting sub Service!"); 
+        alert(error);
+      }
+    )
+  }
+  deleteMainserv(id){
+    this._listService.deleteMainService(id).subscribe(
+      data=>{
+        alert('MainService Deleted Successfully!');
+        this.getServiceByBuilding()
+      },
+      error=>{
+        console.error("Error deleting MainService!"); 
+        alert(error);
+      }
+    )
   }
 }

@@ -10,7 +10,10 @@ export class EquipmentService {
   getAllEquipments():Observable<any>{
     return this._http
               .get('/api/Equipments')
-              .map(response => {return response.json();});
+              .map(response => {
+                //return response.json();
+                return this.sortEquipment(response.json());
+              });
   }
   getStatus(nameEquip):Observable<any>{
     return this._http
@@ -24,5 +27,11 @@ export class EquipmentService {
     return this._http.put('/api/Equipments/'+equip.Id,body,options).map((res: Response) => res.json())
   }
 
+  private sortEquipment(listEquipment){
+    return listEquipment.sort((a,b)=>{
+      return a.name<b.name?-1:
+              (a.name>b.name?1:0);
+    });
+  }
   
 }
